@@ -3,6 +3,7 @@ import time
 import numpy as np
 from matplotlib.colors import ListedColormap
 from collections import deque
+import heapq
 
 Rows=5
 Cols=5
@@ -119,13 +120,48 @@ def dfs(grid, start, goal):
 
     return []
 
+#UCS algo
+def ucs(grid, start, goal):
+    pq = []
+    heapq.heappush(pq, (0, start))
+    visited = set()
+    parent = {}
+    cost = {start: 0}
+    explored = []
+
+    while pq:
+        current_cost, current = heapq.heappop(pq)
+
+        if current in visited:
+            continue
+
+        visited.add(current)
+        explored.append(current)
+
+        if current == goal:
+            return reconstruct(parent, goal)
+
+        for move in Directions:
+            new_row, new_col = current[0] + move[0], current[1] + move[1]
+            if valid(new_row, new_col):
+                new_cost = current_cost + 1
+                if (new_row, new_col) not in cost or new_cost < cost[(new_row, new_col)]:
+                    cost[(new_row, new_col)] = new_cost
+                    parent[(new_row, new_col)] = current
+                    heapq.heappush(pq, (new_cost, (new_row, new_col)))
+
+        update_screen(grid, start, goal, explored, [node[1] for node in pq], [])
+
+    return []
+
+
 def main():
     grid= np.zeros((Rows,Cols))
     start=(0,0)
     goal=(Rows-1,Cols-1)
     plt.figure(figsize=(6,6))
 
-    path=dfs(grid,start,goal)
+    path=ucs(grid,start,goal)
     update_screen(grid,start,goal,[],[],path)
     plt.show()
 
