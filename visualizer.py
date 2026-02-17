@@ -4,8 +4,8 @@ import numpy as np
 from matplotlib.colors import ListedColormap
 from collections import deque
 
-Rows=10
-Cols=10
+Rows=5
+Cols=5
 Delay=0.1
 
 Directions=[
@@ -93,13 +93,39 @@ def bfs(grid, start, goal):
 
     return []
 
+#dfs uninformed algo
+def dfs(grid, start, goal):
+    stack = [start]
+    visited = set()
+    parent = {}
+    explored = []
+
+    while stack:
+        current = stack.pop()
+        if current not in visited:
+            visited.add(current)
+            explored.append(current)
+
+            if current == goal:
+                return reconstruct(parent, goal)
+
+            for move in reversed(Directions):
+                new_row, new_col = current[0] + move[0], current[1] + move[1]
+                if valid(new_row, new_col) and (new_row, new_col) not in visited:
+                    stack.append((new_row, new_col))
+                    parent[(new_row, new_col)] = current
+
+        update_screen(grid, start, goal, explored, stack, [])
+
+    return []
+
 def main():
     grid= np.zeros((Rows,Cols))
     start=(0,0)
     goal=(Rows-1,Cols-1)
     plt.figure(figsize=(6,6))
 
-    path=bfs(grid,start,goal)
+    path=dfs(grid,start,goal)
     update_screen(grid,start,goal,[],[],path)
     plt.show()
 
