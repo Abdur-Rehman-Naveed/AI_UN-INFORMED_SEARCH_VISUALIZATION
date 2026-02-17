@@ -13,8 +13,8 @@ Directions = [
     (-1, 0),  # Up
     (0, 1),   # Right
     (1, 0),   # Down
-    (0, -1),  # Left
     (1, 1),   # Bottom-Right
+    (0, -1),  # Left
     (-1, -1)  # Top-Left
 ]
 
