@@ -16,6 +16,7 @@ Directions = [
     (1, 1),   # Bottom-Right
     (0, -1),  # Left
     (-1, -1)  # Top-Left
+    
 ]
 
 def update_screen(grid, start, goal, visited, selected, path, title="Search Visualizer"):
@@ -248,7 +249,7 @@ def build_path_bidirectional(vs, vg, meet):
 def main_menu():
     grid = np.zeros((Rows, Cols))
     start = (0, 0)
-    goal = (Rows - 1, Cols - 1)
+    goal = (Rows-1, Cols-1)
     
     # Enabling interactive mode for smoother animation
     plt.ion() 
